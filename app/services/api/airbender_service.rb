@@ -12,7 +12,7 @@ class Api::AirbenderService
   end
 
   def self.characters_affiliation(name)
-    response = conn.get("/api/v1/characters?affiliation=#{name}")
+    response = conn.get("/api/v1/characters?affiliation=#{name}&perPage=999")
 
     response_conversion(response)
   end
