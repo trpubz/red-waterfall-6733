@@ -5,8 +5,19 @@
     <div>
       <h4><%= character.name %></h4>
       <img src="<%= character.photo_url %>" width="150" alt="<%= character.name %>">
-      <p>Allies: <%= character.allies.join(", ") %></p>
-      <p>Enemies: <%= character.enemies.join(", ") %></p>
+
+      <% if character.allies.empty? %>
+        <p>Allies: None</p>
+      <% else %>
+        <p>Allies: <%= character.allies.join(", ") %></p>
+      <% end %>
+
+      <% if character.enemies.empty? %>
+        <p>Enemies: None</p>
+      <% else %>
+        <p>Enemies: <%= character.enemies.join(", ") %></p>
+      <% end %>
+
       <p>Affiliation: <%= character.affiliation.to_s %></p>
     </div>
 <% end %>

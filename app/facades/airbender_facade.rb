@@ -11,9 +11,14 @@ class AirbenderFacade
   end
 
   def characters_by_affiliation(affiliation)
-    data = Api::AirbenderService
-      .characters_affiliation(affiliation)[:data]
-    add_characters(data)  # returns the nation characters
+    norm_affiliation = affiliation_normalization(affiliation)
+    if @characters.any? { |c| c.affiliation.include?(norm_affiliation) && !c.enemies.include?(norm_affiliation) }
+      return @characters.select { |c| c.affiliation.include?(norm_affiliation) }
+    else
+      data = Api::AirbenderService
+        .characters_affiliation(affiliation)[:data]
+      return add_characters(data)  # returns the nation characters
+    end
   end
 
   private
@@ -29,6 +34,13 @@ class AirbenderFacade
       end
     end
 
+    Rails.cache.write("airbender", self)
     nation_characters
   end
+
+  def affiliation_normalization(affiliation)
+    affiliation.split("+").map(&:capitalize).join(" ")
+  end
 end
+
+
